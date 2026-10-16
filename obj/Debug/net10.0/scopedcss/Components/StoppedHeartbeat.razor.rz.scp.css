@@ -1,0 +1,25 @@
+.flatline-container[b-g13ylnhgrz] {
+    width: 600px;
+}
+
+.flatline[b-g13ylnhgrz] {
+    stroke: red;
+    stroke-width: 4;
+
+    animation: pulse-b-g13ylnhgrz 1s infinite;
+}
+
+@keyframes pulse-b-g13ylnhgrz {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

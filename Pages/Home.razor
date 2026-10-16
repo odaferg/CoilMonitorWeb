@@ -1,0 +1,146 @@
+﻿@page "/"
+@using System.Text.Json
+@using CoilMonitorWeb.Models
+@using CoilMonitorWeb.Components
+
+@inject HttpClient Http
+@implements IDisposable
+
+<div class="dashboard">
+    <h1>Coil Monitor</h1>
+
+    @if (_status == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <div class="dashboard-card">
+
+            <h2>@_status!.Service</h2>
+
+            @if (_status?.State == "Running")
+            {
+                <RunningHeartbeat />
+            }
+            else if (_status?.State == "Hung")
+            {
+                <HungHeartbeat />
+            }
+            else
+            {
+                <StoppedHeartbeat />
+            }
+
+            <p>
+                <strong>Status:</strong>
+                <span class="@_status.State.ToLower()">
+                    @_status.State
+                </span>
+            </p>
+
+            <p>
+                <strong>Heartbeat:</strong>
+                @_status.HeartbeatDT.ToString("h:mm:ss tt")
+            </p>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <h2>@QueueWorkerHeader</h2>
+
+            @if (QueueWorkerStatus == "Running")
+            {
+                <RunningHeartbeat />
+            }
+            else if (QueueWorkerStatus == "Hung")
+            {
+                <HungHeartbeat />
+            }
+            else
+            {
+                <StoppedHeartbeat />
+            }
+
+            <p>
+                <strong>Status:</strong>
+                <span class="@QueueWorkerStatus.ToLower()">
+                    @QueueWorkerStatus
+                </span>
+            </p>
+
+            <p>
+                <strong>Heartbeat:</strong>
+                @QueueWorkerHeartbeatText
+            </p>
+
+            <p>
+                <strong>Queue Depth:</strong>
+                @_status!.QueueDepth
+            </p>
+
+        </div>
+    }
+</div>
+
+@code
+{
+    private DashboardStatus? _status;
+    private System.Threading.Timer? _timer;
+    private DateTime _lastRefresh;
+    private string QueueWorkerHeader = "Queue Worker Service";
+    private string QueueWorkerStatus = "";
+    private string QueueWorkerHeartbeatText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDashboardAsync();
+
+        _timer = new Timer(
+            async _ => await RefreshDashboardAsync(),
+            null,
+            TimeSpan.FromSeconds(30),
+            TimeSpan.FromSeconds(30));
+    }
+
+    private string GetStatusColor()
+    {
+        return _status?.State switch
+        {
+            "Running" => "limegreen",
+            "Hung" => "gold",
+            "Stopped" => "red",
+            _ => "gray"
+        };
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+
+    private async Task RefreshDashboardAsync()
+    {
+        var json = await Http.GetStringAsync(
+            $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/dashboard.json?v={DateTime.UtcNow.Ticks}");
+
+        _status =
+            JsonSerializer.Deserialize<DashboardStatus>(json);
+
+        if (_status != null)
+        {
+            QueueWorkerStatus = "Running";
+            QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
+        }
+        else
+        {
+            QueueWorkerStatus = "Stopped";
+            QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
+        }
+
+        _lastRefresh = DateTime.Now;
+
+        await InvokeAsync(StateHasChanged);
+    }
+}

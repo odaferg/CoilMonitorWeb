@@ -1,0 +1,25 @@
+.flatline-container {
+    width: 600px;
+}
+
+.flatline {
+    stroke: red;
+    stroke-width: 4;
+
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

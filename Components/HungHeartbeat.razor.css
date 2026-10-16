@@ -1,0 +1,23 @@
+.ecg-container {
+    width: 600px;
+    overflow: hidden;
+}
+
+.ecg-svg {
+    width: 1200px;
+    height: 100px;
+}
+
+.ecg-track {
+    animation: scroll-ecg 10s linear infinite;
+}
+
+@keyframes scroll-ecg {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(-600px);
+    }
+}

@@ -1,0 +1,27 @@
+.dashboard[b-5d7y8my9vl] {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+}
+
+.running[b-5d7y8my9vl] {
+    color: limegreen;
+}
+
+.hung[b-5d7y8my9vl] {
+    color: gold;
+}
+
+.stopped[b-5d7y8my9vl] {
+    color: red;
+}
+
+.dashboard-card[b-5d7y8my9vl] {
+    background-color: #1E1E1E;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+}

@@ -1,0 +1,73 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.VerifyReferenceTrimCompatibility = 
+build_property.VerifyReferenceAotCompatibility = 
+build_property.TargetFramework = net10.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = CoilMonitorWeb
+build_property.RootNamespace = CoilMonitorWeb
+build_property.ProjectDir = C:\Users\a35940\source\repos\CoilMonitorWeb\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\a35940\source\repos\CoilMonitorWeb
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Pages/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90Rm91bmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Components/HungHeartbeat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xIdW5nSGVhcnRiZWF0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ap49mo4jc7
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Components/RunningHeartbeat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSdW5uaW5nSGVhcnRiZWF0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-5j4gkwwjbv
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Components/StoppedHeartbeat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTdG9wcGVkSGVhcnRiZWF0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-g13ylnhgrz
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-p6kdiuqeqe
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-42cwqn2azv
+
+[C:/Users/a35940/source/repos/CoilMonitorWeb/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-5d7y8my9vl
