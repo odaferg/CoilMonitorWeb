@@ -34,14 +34,14 @@
 
             <p>
                 <strong>Status:</strong>
-                <span class="@_status.State.ToLower()">
-                    @_status.State
+                <span class="@_status?.State.ToLower()">
+                    @_status?.State
                 </span>
             </p>
 
             <p>
                 <strong>Heartbeat:</strong>
-                @_status.HeartbeatDT.ToString("h:mm:ss tt")
+                @_status?.HeartbeatDT.ToString("h:mm:ss tt")
             </p>
 
         </div>
