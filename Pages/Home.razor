@@ -136,6 +136,10 @@
                     ? "Hung"
                     : "Stopped";
             QueueWorkerStatus = CalculatedState;
+            if (CalculatedState == "Stopped")
+            {
+                _status.State = "Stopped";
+            }
             QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
         }
         else
