@@ -1,0 +1,65 @@
+@page "/opsqueue"
+@using System.Text.Json
+@using CoilMonitorWeb.Models
+@inject HttpClient Http
+
+<h3>Queue</h3>
+
+@if (queueItems == null)
+{
+    <p>Loading...</p>
+}
+else if (!queueItems.Any())
+{
+    <p>No coils currently queued.</p>
+}
+else
+{
+    <div class="queue-page">
+
+        @foreach (var item in queueItems)
+        {
+            <div class="queue-card">
+                <h4>@item.CoilNumber</h4>
+
+                <div class="time">
+                    Queued: @item.QueuedTime
+                </div>
+
+                <div class="time">
+                    Scheduled: @item.RunTime
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@code {
+    private List<QueuedCoilDto>? queueItems;
+    private Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadQueue();
+
+        timer = new Timer(async _ =>
+        {
+            await InvokeAsync(async () =>
+            {
+                await LoadQueue();
+                StateHasChanged();
+            });
+        }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+    }
+
+    private async Task LoadQueue()
+    {
+        queueItems = await Http.GetFromJsonAsync<List<QueuedCoilDto>>(
+            $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/queuelist.json?v={DateTime.UtcNow.Ticks}");
+
+        queueItems = queueItems!
+                    .OrderBy(x => x.RunTime)
+                    .ToList();
+    }
+}

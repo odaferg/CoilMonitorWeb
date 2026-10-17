@@ -130,7 +130,12 @@
 
         if (_status != null)
         {
-            QueueWorkerStatus = "Running";
+            string CalculatedState = DateTime.Now - _status.HeartbeatDT < TimeSpan.FromMinutes(2)
+                    ? "Running"
+                    : DateTime.Now - _status.HeartbeatDT < TimeSpan.FromMinutes(5)
+                    ? "Hung"
+                    : "Stopped";
+            QueueWorkerStatus = CalculatedState;
             QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
         }
         else

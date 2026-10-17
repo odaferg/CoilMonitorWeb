@@ -264,3 +264,24 @@ main[b-p6kdiuqeqe] {
 
     box-shadow: 0 0 10px rgba(0,0,0,.4);
 }
+/* /Pages/Queue.razor.rz.scp.css */
+.queue-page[b-epqig6pss1] {
+    color: white;
+}
+
+.queue-card[b-epqig6pss1] {
+    background-color: #1e1e1e;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.queue-card h4[b-epqig6pss1] {
+    color: white;
+}
+
+.queue-card .time[b-epqig6pss1] {
+    color: #d0d0d0;
+}
