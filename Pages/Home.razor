@@ -9,42 +9,46 @@
 <div class="dashboard">
     <h1>Coil Monitor</h1>
 
-    @if (_status == null)
+    @if (_dashboard == null)
     {
         <p>Loading...</p>
     }
     else
     {
-        <div class="dashboard-card">
+        @foreach (var service in _dashboard.Services.OrderBy(s => s.Service))
+        {
+            <div class="dashboard-card">
 
-            <h2>@_status!.Service</h2>
+                <h2>@service.Service</h2>
 
-            @if (_status?.State == "Running")
-            {
-                <RunningHeartbeat />
-            }
-            else if (_status?.State == "Hung")
-            {
-                <HungHeartbeat />
-            }
-            else
-            {
-                <StoppedHeartbeat />
-            }
+                @if (service.State == "Running")
+                {
+                    <RunningHeartbeat />
+                }
+                else if (service.State == "Hung")
+                {
+                    <HungHeartbeat />
+                }
+                else
+                {
+                    <StoppedHeartbeat />
+                }
 
-            <p>
-                <strong>Status:</strong>
-                <span class="@_status?.State.ToLower()">
-                    @_status?.State
-                </span>
-            </p>
+                <p>
+                    <strong>Status:</strong>
+                    <span style="color:@GetStatusColor(service.State)">
+                        @service.State
+                    </span>
+                </p>
 
-            <p>
-                <strong>Heartbeat:</strong>
-                @_status?.HeartbeatDT.ToString("h:mm:ss tt")
-            </p>
+                <p>
+                    <strong>Heartbeat:</strong>
+                    @* @service.HeartbeatDT *@
+                    @service.HeartbeatDT.ToLocalTime().ToString("T")
+                </p>
 
-        </div>
+            </div>
+        }
 
         <div class="dashboard-card">
 
@@ -77,7 +81,7 @@
 
             <p>
                 <strong>Queue Depth:</strong>
-                @_status!.QueueDepth
+                @QueueDepth
             </p>
 
         </div>
@@ -86,12 +90,13 @@
 
 @code
 {
-    private DashboardStatus? _status;
+    private DashboardDto? _dashboard;
     private System.Threading.Timer? _timer;
     private DateTime _lastRefresh;
     private string QueueWorkerHeader = "Queue Worker Service";
     private string QueueWorkerStatus = "";
     private string QueueWorkerHeartbeatText = "";
+    private int QueueDepth = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,13 +109,13 @@
             TimeSpan.FromSeconds(30));
     }
 
-    private string GetStatusColor()
+    private string GetStatusColor(string State)
     {
-        return _status?.State switch
+        return State.ToUpper().Trim() switch
         {
-            "Running" => "limegreen",
-            "Hung" => "gold",
-            "Stopped" => "red",
+            "RUNNING" => "limegreen",
+            "HUNG" => "gold",
+            "STOPPED" => "red",
             _ => "gray"
         };
     }
@@ -125,22 +130,23 @@
         var json = await Http.GetStringAsync(
             $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/dashboard.json?v={DateTime.UtcNow.Ticks}");
 
-        _status =
-            JsonSerializer.Deserialize<DashboardStatus>(json);
+        _dashboard = JsonSerializer.Deserialize<DashboardDto>(json);
 
-        if (_status != null)
+        if (_dashboard != null)
         {
-            string CalculatedState = DateTime.Now - _status.HeartbeatDT < TimeSpan.FromMinutes(2)
-                    ? "Running"
-                    : DateTime.Now - _status.HeartbeatDT < TimeSpan.FromMinutes(5)
+            var service = _dashboard.Services[0];
+            string calculatedState =
+                DateTime.UtcNow - service.HeartbeatDT < TimeSpan.FromMinutes(2)
+                ? "Running"
+                : DateTime.UtcNow - service.HeartbeatDT < TimeSpan.FromMinutes(5)
                     ? "Hung"
                     : "Stopped";
-            QueueWorkerStatus = CalculatedState;
-            if (CalculatedState == "Stopped")
-            {
-                _status.State = "Stopped";
-            }
+
+            QueueWorkerStatus = calculatedState;
+
             QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
+
+            QueueDepth = _dashboard.QueueDepth;
         }
         else
         {

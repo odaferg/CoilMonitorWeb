@@ -1,6 +1,8 @@
 @page "/queue"
 @using System.Text.Json
 @using CoilMonitorWeb.Models
+@using CoilMonitorWeb.Helpers
+@inject RequestService RequestService
 @inject HttpClient Http
 
 <h3>Queue</h3>
@@ -32,12 +34,58 @@ else
             </div>
         }
 
+        @if (showPinDialog)
+        {
+            <div class="modal-overlay">
+                <div style="
+                    background:#1e1e1e;
+                    color:white;
+                    width:400px;
+                    height:300px;
+                    z-index:99999;
+                    padding:20px;
+                    border: 1px solid #404040;
+                    box-shadow: 0 10px 30px rgba(0,0,0,.5);">
+
+                    <h3>Force Process</h3>
+
+                    <p>Coil: @selectedCoilNumber</p>
+
+                    <input style="
+                            width: 100%;
+                            padding: 8px;
+                            margin-top: 12px;
+                            margin-bottom: 16px;
+                            border: 1px solid #555;
+                            background: #2b2b2b;
+                            color: white;" 
+                            type="password" @bind="authToken" />
+
+                    <br /><br />
+
+                    <button @onclick="CloseDialog">
+                        Cancel
+                    </button>
+
+                    <button @onclick="SubmitForceProcess">
+                        Submit
+                    </button>
+
+                </div>
+            </div>
+        }
+
     </div>
 }
 
 @code {
     private List<QueuedCoilDto>? queueItems;
     private Timer? timer;
+    private bool showPinDialog;
+
+    private string authToken = "";
+
+    private string selectedCoilNumber = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,5 +109,44 @@ else
         queueItems = queueItems!
                     .OrderBy(x => x.RunTime)
                     .ToList();
+    }
+
+    private void ShowForceProcessDialog(string coilNumber)
+    {
+        selectedCoilNumber = coilNumber;
+        authToken = "";
+        showPinDialog = true;
+    }
+
+    private void CloseDialog()
+    {
+        showPinDialog = false;
+        authToken = "";
+        selectedCoilNumber = "";
+    }
+
+    private async Task SubmitForceProcess()
+    {
+        var request = new CommandRequest
+        {
+            RequestId = Guid.NewGuid().ToString(),
+
+            JobType = "ForceProcess",
+
+            AuthTokenHash = HashHelper.ComputeSha256(authToken),
+
+            Status = RequestStatus.Pending,
+
+            CreatedAt = DateTime.UtcNow,
+
+            Parameters = new()
+            {
+                ["CoilNumber"] = selectedCoilNumber
+            }
+        };
+
+        await RequestService.CreateRequest(request);
+
+        showPinDialog = false;
     }
 }

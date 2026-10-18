@@ -285,3 +285,29 @@ main[b-p6kdiuqeqe] {
 .queue-card .time[b-epqig6pss1] {
     color: #d0d0d0;
 }
+
+.modal-overlay[b-epqig6pss1] {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.modal[b-epqig6pss1] {
+    background: white;
+    color: black;
+
+    padding: 20px;
+    border-radius: 8px;
+
+    width: 300px;
+
+    z-index: 10000;
+
+    min-height: 200px;
+}
