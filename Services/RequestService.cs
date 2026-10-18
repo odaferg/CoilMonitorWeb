@@ -2,6 +2,8 @@ using CoilMonitorWeb.Models;
 using System.Text.Json;
 using System.Text;
 using System.Net.Http.Headers;
+using System.Net;
+using System.Net.Mail;
 
 public class RequestService
 {
@@ -28,6 +30,20 @@ public class RequestService
         // Save requests.json
         await SaveRequests(requests);
     }
+
+    #region Email
+    public async Task<string> CreateEmailRequest(CommandRequest request)
+    {
+        var json = JsonSerializer.Serialize(request);
+
+        var subject = Uri.EscapeDataString($"Queue Request {request.RequestId}");
+        var body = Uri.EscapeDataString(json);
+
+        string mailto = $"mailto:dylan.ferguson@clevelandcliffs.com?subject={subject}&body={body}";
+
+        return mailto;
+    }
+    #endregion
 
     public async Task SaveRequests(
     List<CommandRequest> requests)

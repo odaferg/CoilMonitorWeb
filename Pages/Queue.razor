@@ -2,6 +2,7 @@
 @using System.Text.Json
 @using CoilMonitorWeb.Models
 @using CoilMonitorWeb.Helpers
+@inject IJSRuntime JS
 @inject RequestService RequestService
 @inject HttpClient Http
 
@@ -21,7 +22,7 @@ else
 
         @foreach (var item in queueItems)
         {
-            <div class="queue-card">
+            <div class="queue-card" @onclick="() => ShowForceProcessDialog(item.CoilNumber)">
                 <h4>@item.CoilNumber</h4>
 
                 <div class="time">
@@ -145,7 +146,9 @@ else
             }
         };
 
-        await RequestService.CreateRequest(request);
+        //await RequestService.CreateRequest(request);
+        string mailto = await RequestService.CreateEmailRequest(request);
+        await JS.InvokeVoidAsync("open", mailto);
 
         showPinDialog = false;
     }
