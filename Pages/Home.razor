@@ -212,9 +212,9 @@
         {
             foreach (var ds in _dashboard.Services)
             {
-                string calcState = DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(6)
+                string calcState = DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(10)
                                     ? ds.State
-                                    : DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(10)
+                                    : DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(11)
                                     ? "Hung"
                                     : "Stopped";
                 if (ds.Service == "MorningMeetingService")
