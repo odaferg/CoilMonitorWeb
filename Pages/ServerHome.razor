@@ -1,0 +1,130 @@
+@page "/Server"
+@using System.Text.Json
+@using CoilMonitorWeb.Models
+@using CoilMonitorWeb.Components
+@using CoilMonitorWeb.Helpers
+
+@inject HttpClient Http
+@implements IDisposable
+@inject IJSRuntime JS
+@inject RequestService RequestService
+
+<div class="dashboard">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Room Monitor</h1>
+    </div>
+
+    @if (_dashboard == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var server in _dashboard.Servers) 
+        {
+            <div class="dashboard-card">
+                <h2>@server.Server</h2>
+
+                @if (server.State == "Running")
+                {
+                    <RunningHeartbeat />
+                }
+                else if (server.State == "Hung")
+                {
+                    <HungHeartbeat />
+                }
+                else if (server.State == "Sleeping")
+                {
+                    <SleepingHeartbeat />
+                }
+                else
+                {
+                    <StoppedHeartbeat />
+                }
+
+                <p>
+                    <strong>Status:</strong>
+                    <span style="color:@GetStatusColor(server.State)">
+                        @server.State
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Heartbeat:</strong>
+                    @server.HeartbeatDT.ToLocalTime().ToString("T")
+                </p>
+            </div>
+        }
+    }
+</div>
+
+@code
+{
+    private DashboardTwoDto? _dashboard;
+    private System.Threading.Timer? _timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDashboardAsync();
+
+        _timer = new Timer(
+            async _ => await RefreshDashboardAsync(),
+            null,
+            TimeSpan.FromSeconds(30),
+            TimeSpan.FromSeconds(30));
+    }
+
+    private string GetStatusColor(string State)
+    {
+        return State.ToUpper().Trim() switch
+        {
+            "RUNNING" => "limegreen",
+            "HUNG" => "gold",
+            "STOPPED" => "red",
+            _ => "gray"
+        };
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+
+    private async Task RefreshDashboardAsync()
+    {
+        List<ServerStatusDto> _servers = new List<ServerStatusDto>();
+        ServerStatusDto web03 = new ServerStatusDto
+        {
+            Server = "ITK-WEB03v",
+            State = "Running",
+            HeartbeatDT = DateTime.Now
+        };
+        _servers.Add(web03);
+        ServerStatusDto web03t = new ServerStatusDto
+        {
+            Server = "ITK-WEB03tv",
+            State = "Stopped",
+            HeartbeatDT = DateTime.Now
+        };
+        _servers.Add(web03t);
+        ServerStatusDto app03 = new ServerStatusDto
+        {
+            Server = "ITK-App03v",
+            State = "Running",
+            HeartbeatDT = DateTime.Now
+        };
+        _servers.Add(app03);
+        _dashboard = new DashboardTwoDto
+        {
+            Servers = _servers
+        };
+
+        @* if (_dashboard != null)
+        {
+            
+        } *@
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

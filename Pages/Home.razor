@@ -2,12 +2,48 @@
 @using System.Text.Json
 @using CoilMonitorWeb.Models
 @using CoilMonitorWeb.Components
+@using CoilMonitorWeb.Helpers
 
 @inject HttpClient Http
 @implements IDisposable
+@inject IJSRuntime JS
+@inject RequestService RequestService
 
 <div class="dashboard">
-    <h1>Coil Monitor</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1 class="mb-0">Hall Monitor</h1>
+
+        <div class="d-flex gap-2">
+
+            <div class="card bg-dark text-white border-secondary">
+                <div class="card-body text-center p-2" style="width:100px;height:75px;">
+                    <div class="text-warning">Pending</div>
+                    <h5>@PendingJobs</h5>
+                </div>
+            </div>
+
+            <div class="card bg-dark text-white border-secondary">
+                <div class="card-body text-center p-2" style="width:100px;height:75px;">
+                    <div class="text-success">Completed</div>
+                    <h5>@CompletedJobs</h5>
+                </div>
+            </div>
+
+            <div class="card bg-dark text-white border-secondary">
+                <div class="card-body text-center p-2" style="width:100px;height:75px;">
+                    <div class="text-danger">Failed</div>
+                    <h5>@FailedJobs</h5>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary" @onclick="(() => ShowRequestJobModal = true)">
+            Request Job
+        </button>
+
+    </div>
 
     @if (_dashboard == null)
     {
@@ -15,7 +51,7 @@
     }
     else
     {
-        @foreach (var service in _dashboard.Services.OrderBy(s => s.Service))
+        @foreach (var service in _dashboard.Services)
         {
             <div class="dashboard-card">
 
@@ -28,6 +64,10 @@
                 else if (service.State == "Hung")
                 {
                     <HungHeartbeat />
+                }
+                else if (service.State == "Sleeping")
+                {
+                    <SleepingHeartbeat />
                 }
                 else
                 {
@@ -49,54 +89,89 @@
 
             </div>
         }
-
-        <div class="dashboard-card">
-
-            <h2>@QueueWorkerHeader</h2>
-
-            @if (QueueWorkerStatus == "Running")
-            {
-                <RunningHeartbeat />
-            }
-            else if (QueueWorkerStatus == "Hung")
-            {
-                <HungHeartbeat />
-            }
-            else
-            {
-                <StoppedHeartbeat />
-            }
-
-            <p>
-                <strong>Status:</strong>
-                <span class="@QueueWorkerStatus.ToLower()">
-                    @QueueWorkerStatus
-                </span>
-            </p>
-
-            <p>
-                <strong>Heartbeat:</strong>
-                @QueueWorkerHeartbeatText
-            </p>
-
-            <p>
-                <strong>Queue Depth:</strong>
-                @QueueDepth
-            </p>
-
-        </div>
     }
 </div>
+@if (ShowRequestJobModal)
+{
+    <div class="modal show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Request Job</h5>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Job Type</label>
+
+                        <InputSelect class="form-select" @bind-Value="SelectedJobType">
+                            <option value="">Select Job Type</option>
+
+                            @foreach (var jobType in JobTypes)
+                            {
+                                <option value="@jobType">@jobType</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Job Name</label>
+
+                        <InputText class="form-control" @bind-Value="NewJob.JobName" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Retry Count</label>
+
+                        <InputNumber class="form-control" @bind-Value="NewJob.RetryCnt" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Notification Required
+                        </label>
+
+                        <InputSelect class="form-select" @bind-Value="NewJob.NotificationRequired">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </InputSelect>
+                    </div>
+
+                    <input style="
+                            width: 100%;
+                            padding: 8px;
+                            margin-top: 12px;
+                            margin-bottom: 16px;"
+                            type="password" @bind="authToken" />
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseModal">
+                        Cancel
+                    </button>
+
+                    <button class="btn btn-primary" @onclick="SubmitJob">
+                        Submit
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
 
 @code
 {
     private DashboardDto? _dashboard;
     private System.Threading.Timer? _timer;
     private DateTime _lastRefresh;
-    private string QueueWorkerHeader = "Queue Worker Service";
-    private string QueueWorkerStatus = "";
-    private string QueueWorkerHeartbeatText = "";
     private int QueueDepth = 0;
+    private int PendingJobs = 0;
+    private int CompletedJobs = 0;
+    private int FailedJobs = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,6 +191,7 @@
             "RUNNING" => "limegreen",
             "HUNG" => "gold",
             "STOPPED" => "red",
+            "SLEEPING" => "lightskyblue",
             _ => "gray"
         };
     }
@@ -134,28 +210,88 @@
 
         if (_dashboard != null)
         {
-            var service = _dashboard.Services[0];
-            string calculatedState =
-                DateTime.UtcNow - service.HeartbeatDT < TimeSpan.FromMinutes(2)
-                ? "Running"
-                : DateTime.UtcNow - service.HeartbeatDT < TimeSpan.FromMinutes(5)
-                    ? "Hung"
-                    : "Stopped";
+            foreach (var ds in _dashboard.Services)
+            {
+                string calcState = DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(6)
+                                    ? ds.State
+                                    : DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromMinutes(10)
+                                    ? "Hung"
+                                    : "Stopped";
+                if (ds.Service == "MorningMeetingService")
+                {
+                    if (ds.State != "Stopped" && calcState == "Stopped")
+                    {
+                        calcState = DateTime.UtcNow - ds.HeartbeatDT < TimeSpan.FromHours(24)
+                                    ? "Sleeping"
+                                    : "Stopped";
+                    }
+                }
+                
+                ds.State = calcState;
+            }
 
-            QueueWorkerStatus = calculatedState;
-
-            QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
-
-            QueueDepth = _dashboard.QueueDepth;
-        }
-        else
-        {
-            QueueWorkerStatus = "Stopped";
-            QueueWorkerHeartbeatText = $"{DateTime.Now:T}";
+            PendingJobs = _dashboard.PendingQueue;
+            CompletedJobs = _dashboard.CompletedQueue;
+            FailedJobs = _dashboard.FailedQueue;
         }
 
         _lastRefresh = DateTime.Now;
 
         await InvokeAsync(StateHasChanged);
     }
+
+    #region Modal Stuff
+    private JobRequest NewJob = new()
+    {
+        RetryCnt = 0,
+        NotificationRequired = false
+    };
+    private string authToken = "";
+
+    private bool ShowRequestJobModal = false;
+    private string SelectedJobType = "";
+
+    private List<string> JobTypes = new()
+    {
+        "ServiceRestart",
+        "ProcessCoil",
+        "GenerateReport",
+        "TrainModel"
+    };
+
+    private void CloseModal()
+    {
+        ShowRequestJobModal = false;
+
+        NewJob = new JobRequest
+        {
+            RetryCnt = 0,
+            NotificationRequired = false
+        };
+    }
+
+    private async Task SubmitJob()
+    {
+        var retryCnt = NewJob.RetryCnt;
+        var notificationRequired = NewJob.NotificationRequired;
+        var job = new JobRequest
+        {
+            JobType = $"{SelectedJobType}",
+            JobName = $"{NewJob.JobName}",
+            RunTime = DateTime.Now,
+            RetryCnt = retryCnt,
+            FromService = "CoilMonitorWeb",
+            NotificationRequired = notificationRequired,
+            AuthTokenHash = HashHelper.ComputeSha256(authToken)
+        };
+
+        string mailto = await RequestService.CreateEmailRequest(job);
+        await JS.InvokeVoidAsync(identifier: "open", mailto);
+
+        CloseModal();
+
+        @* await LoadJobs(); *@
+    }
+    #endregion
+
 }

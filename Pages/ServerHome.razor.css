@@ -1,0 +1,74 @@
+.queue-page {
+    color: white;
+}
+
+.queue-card {
+    background-color: #1e1e1e;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.queue-card h4 {
+    color: white;
+}
+
+.queue-card .time {
+    color: #d0d0d0;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.modal {
+    background: white;
+    color: black;
+
+    padding: 20px;
+    border-radius: 8px;
+
+    width: 300px;
+
+    z-index: 10000;
+
+    min-height: 200px;
+}
+
+.dashboard {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+}
+
+.running {
+    color: limegreen;
+}
+
+.hung {
+    color: gold;
+}
+
+.stopped {
+    color: red;
+}
+
+.dashboard-card {
+    background-color: #1E1E1E;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+}

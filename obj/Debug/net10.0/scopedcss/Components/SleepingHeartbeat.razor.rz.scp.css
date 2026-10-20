@@ -1,0 +1,23 @@
+.ecg-container[b-7nwn0kvil7] {
+    width: 600px;
+    overflow: hidden;
+}
+
+.ecg-svg[b-7nwn0kvil7] {
+    width: 1200px;
+    height: 100px;
+}
+
+.ecg-track[b-7nwn0kvil7] {
+    animation: scroll-ecg-b-7nwn0kvil7 10s linear infinite;
+}
+
+@keyframes scroll-ecg-b-7nwn0kvil7 {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(-600px);
+    }
+}

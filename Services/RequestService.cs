@@ -43,6 +43,18 @@ public class RequestService
 
         return mailto;
     }
+
+    public async Task<string> CreateEmailRequest(JobRequest job)
+    {
+        var json = JsonSerializer.Serialize(job);
+
+        var subject = Uri.EscapeDataString($"Queue Request {job.JobName}");
+        var body = Uri.EscapeDataString(json);
+
+        string mailto = $"mailto:dylan.ferguson@clevelandcliffs.com?subject={subject}&body={body}";
+
+        return mailto;
+    }
     #endregion
 
     public async Task SaveRequests(

@@ -4,7 +4,9 @@ public class DashboardDto
 {
     public List<ServiceStatusDto> Services { get; set; } = new();
 
-    public int QueueDepth { get; set; }
+    public int PendingQueue { get; set; }
+    public int CompletedQueue { get; set; }
+    public int FailedQueue { get; set; }
 }
 
 public class ServiceStatusDto
@@ -42,4 +44,35 @@ public class CommandRequest
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public string Status { get; set; } = "Pending";
+}
+
+public class JobRequest
+{
+    public string JobType { get; set; } = string.Empty;
+    public string JobName { get; set; } = "";
+    public DateTime RunTime { get; set; } = DateTime.Now;
+    public int RetryCnt { get; set; }
+    public string FromService { get; set; } = "CoilMonitorWeb";
+    public bool NotificationRequired { get; set; }
+    public string AuthTokenHash { get; set; } = string.Empty;
+}
+
+public class QueueInformationDto
+{
+    public int PendingCount { get; set; }
+    public int CompletedCount { get; set; }
+    public int FailedCount { get; set; }
+    public DateTime LastUpdated { get; set; }
+}
+
+public class DashboardTwoDto
+{
+    public List<ServerStatusDto> Servers { get; set; } = new();
+}
+
+public class ServerStatusDto
+{
+    public string Server { get; set; } = "";
+    public string State { get; set; } = "";
+    public DateTimeOffset HeartbeatDT { get; set; }
 }
