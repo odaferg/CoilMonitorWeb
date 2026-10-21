@@ -321,12 +321,12 @@ main[b-p6kdiuqeqe] {
     font-size: .9rem;
 }
 
-/* .line-status {
+.line-status[b-5d7y8my9vl] {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50px;
-} */
+}
 
 .line-status i[b-5d7y8my9vl] {
     height: 20px;
@@ -341,6 +341,216 @@ main[b-p6kdiuqeqe] {
 .status-green[b-5d7y8my9vl] {
     color: limegreen;
     margin-top: 4px;
+}
+
+.popover-container[b-5d7y8my9vl] {
+    position: relative;
+    cursor: pointer;
+}
+
+.popover-content[b-5d7y8my9vl] {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+
+    min-width: 250px;
+    padding: 10px;
+
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    z-index: 1000;
+}
+
+.popover-container:hover .popover-content[b-5d7y8my9vl] {
+    display: block;
+}
+
+.status-table[b-5d7y8my9vl] {
+    /* width: 100%; */
+    width: fit-content;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.status-table th[b-5d7y8my9vl] {
+    background: #7d95b3;
+    color: black;
+    padding: 8px;
+    text-align: center;
+}
+
+.status-table td[b-5d7y8my9vl] {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+
+.good[b-5d7y8my9vl] {
+    background: limegreen;
+    color: white;
+    font-weight: bold;
+}
+
+.positive-value[b-5d7y8my9vl] {
+    background-color: rgba(50,205,50,1); /* Green */
+    color: white;
+}
+
+.negative-value[b-5d7y8my9vl] {
+    background-color: rgba(255,0,0,1); /* Red */
+    color: white;
+}
+/* /Pages/HomePage.razor.rz.scp.css */
+.dashboard[b-ios7d7ppan] {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.running[b-ios7d7ppan] {
+    color: limegreen;
+}
+
+.hung[b-ios7d7ppan] {
+    color: gold;
+}
+
+.stopped[b-ios7d7ppan] {
+    color: red;
+}
+
+.dashboard-card[b-ios7d7ppan] {
+    background-color: #1E1E1E;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.line-status-bar[b-ios7d7ppan] {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: .9rem;
+}
+
+.line-name[b-ios7d7ppan] {
+    color: lightgray;
+}
+
+.line-card[b-ios7d7ppan] {
+    width: 65px;
+    text-align: center;
+    gap: 20px;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.line-status-container[b-ios7d7ppan] {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    font-size: .9rem;
+}
+
+.line-status[b-ios7d7ppan] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+}
+
+.line-status i[b-ios7d7ppan] {
+    height: 20px;
+    width: 20px;
+}
+
+.status-red[b-ios7d7ppan] {
+    color: red;
+    margin-top: 4px;
+}
+
+.status-green[b-ios7d7ppan] {
+    color: limegreen;
+    margin-top: 4px;
+}
+
+.popover-container[b-ios7d7ppan] {
+    position: relative;
+    cursor: pointer;
+}
+
+.popover-content[b-ios7d7ppan] {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+
+    min-width: 250px;
+    padding: 10px;
+
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    z-index: 1000;
+}
+
+.popover-container:hover .popover-content[b-ios7d7ppan] {
+    display: block;
+}
+
+.status-table[b-ios7d7ppan] {
+    /* width: 100%; */
+    width: fit-content;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.status-table th[b-ios7d7ppan] {
+    background: #7d95b3;
+    color: black;
+    padding: 8px;
+    text-align: center;
+}
+
+.status-table td[b-ios7d7ppan] {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+
+.good[b-ios7d7ppan] {
+    background: limegreen;
+    color: white;
+    font-weight: bold;
+}
+
+.positive-value[b-ios7d7ppan] {
+    background-color: rgba(50,205,50,1); /* Green */
+    color: white;
+}
+
+.negative-value[b-ios7d7ppan] {
+    background-color: rgba(255,0,0,1); /* Red */
+    color: white;
 }
 /* /Pages/Queue.razor.rz.scp.css */
 .queue-page[b-epqig6pss1] {

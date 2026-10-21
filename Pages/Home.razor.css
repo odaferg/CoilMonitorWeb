@@ -58,12 +58,12 @@
     font-size: .9rem;
 }
 
-/* .line-status {
+.line-status {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50px;
-} */
+}
 
 .line-status i {
     height: 20px;
@@ -78,4 +78,68 @@
 .status-green {
     color: limegreen;
     margin-top: 4px;
+}
+
+.popover-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.popover-content {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+
+    min-width: 250px;
+    padding: 10px;
+
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    z-index: 1000;
+}
+
+.popover-container:hover .popover-content {
+    display: block;
+}
+
+.status-table {
+    /* width: 100%; */
+    width: fit-content;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.status-table th {
+    background: #7d95b3;
+    color: black;
+    padding: 8px;
+    text-align: center;
+}
+
+.status-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+
+.good {
+    background: limegreen;
+    color: white;
+    font-weight: bold;
+}
+
+.positive-value {
+    background-color: rgba(50,205,50,1); /* Green */
+    color: white;
+}
+
+.negative-value {
+    background-color: rgba(255,0,0,1); /* Red */
+    color: white;
 }

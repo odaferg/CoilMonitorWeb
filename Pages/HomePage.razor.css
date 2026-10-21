@@ -1,0 +1,145 @@
+.dashboard {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.running {
+    color: limegreen;
+}
+
+.hung {
+    color: gold;
+}
+
+.stopped {
+    color: red;
+}
+
+.dashboard-card {
+    background-color: #1E1E1E;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.line-status-bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: .9rem;
+}
+
+.line-name {
+    color: lightgray;
+}
+
+.line-card {
+    width: 65px;
+    text-align: center;
+    gap: 20px;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.line-status-container {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    font-size: .9rem;
+}
+
+.line-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+}
+
+.line-status i {
+    height: 20px;
+    width: 20px;
+}
+
+.status-red {
+    color: red;
+    margin-top: 4px;
+}
+
+.status-green {
+    color: limegreen;
+    margin-top: 4px;
+}
+
+.popover-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.popover-content {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+
+    min-width: 250px;
+    padding: 10px;
+
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    z-index: 1000;
+}
+
+.popover-container:hover .popover-content {
+    display: block;
+}
+
+.status-table {
+    /* width: 100%; */
+    width: fit-content;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.status-table th {
+    background: #7d95b3;
+    color: black;
+    padding: 8px;
+    text-align: center;
+}
+
+.status-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+
+.good {
+    background: limegreen;
+    color: white;
+    font-weight: bold;
+}
+
+.positive-value {
+    background-color: rgba(50,205,50,1); /* Green */
+    color: white;
+}
+
+.negative-value {
+    background-color: rgba(255,0,0,1); /* Red */
+    color: white;
+}

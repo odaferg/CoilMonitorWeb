@@ -16,6 +16,27 @@ public class ServiceStatusDto
     public DateTimeOffset HeartbeatDT { get; set; }
 }
 
+public class DailySummary
+{
+    public List<DailySummaryDto> DailyInfo { get; set; } = [];
+    public string SnapShotDate { get; set; } = "";
+}
+
+public class DailySummaryDto
+{
+    public string Line { get; set; } = "";
+    public double Day { get; set; }
+    public double SOP { get; set; }
+    public double WorkingRatio { get; set; }
+    public double Efficiency { get; set; }
+}
+
+public class LineStatusDto
+{
+    public string Line { get; set; } = "";
+    public string Status { get; set; } = "";
+}
+
 public class QueuedCoilDto
 {
     public string CoilNumber { get; set; } = "";

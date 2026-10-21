@@ -1,6 +1,8 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject NavigationManager Navigation
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">CoilMonitorWeb</a>
+        <a class="navbar-brand" href="javascript:void(0)" @onclick="SecretClick">NCW</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,13 +17,8 @@
             </NavLink>
         </div>
         @* <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Server">
-                <span class="bi bi-hosue-door-fill-nav-menu" aria-hidden="true"></span> Room
-            </NavLink>
-        </div> *@
-        @* <div class="nav-item px-3">
-            <NavLink class="nav-link" href="queue">
-                Queue
+            <NavLink class="nav-link" href="HomePage">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Systems Home
             </NavLink>
         </div> *@
     </nav>
@@ -31,9 +28,29 @@
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private int _secretClickCount;
+    private DateTime _lastClick = DateTime.MinValue;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void SecretClick()
+    {
+        // Reset if too much time passed
+        if ((DateTime.Now - _lastClick).TotalSeconds > 3)
+        {
+            _secretClickCount = 0;
+        }
+
+        _secretClickCount++;
+        _lastClick = DateTime.Now;
+
+        if (_secretClickCount >= 5)
+        {
+            _secretClickCount = 0;
+            Navigation.NavigateTo("/HomePage");
+        }
     }
 }
