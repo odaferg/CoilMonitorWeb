@@ -14,7 +14,7 @@
 
         <h1 class="mb-0">Hall Monitor</h1>
 
-        <div class="d-flex gap-2">
+        @* <div class="d-flex gap-2">
 
             <div class="card bg-dark text-white border-secondary">
                 <div class="card-body text-center p-2" style="width:100px;height:75px;">
@@ -37,12 +37,26 @@
                 </div>
             </div>
 
-        </div>
+        </div> *@
 
         <button class="btn btn-primary" @onclick="(() => ShowRequestJobModal = true)">
             Request Job
         </button>
 
+    </div>
+    <div class="line-status-container">
+        <div class="line-status">
+            <span style="color:@GetStatusColor("Running")">Running: @RunCnt</span>
+        </div>
+        <div class="line-status">
+            <span style="color:@GetStatusColor("Hung")" Title=@hungString>Hung: @HungCnt</span>
+        </div>
+        <div class="line-status">
+            <span style="color:@GetStatusColor("Sleeping")" Title=@sleepString>Sleeping: @SleepCnt</span>
+        </div>
+        <div class="line-status">
+            <span style="color:@GetStatusColor("Stopped")" Title=@stopString>Stopped: @StopCnt</span>
+        </div>
     </div>
 
     @if (_dashboard == null)
@@ -165,6 +179,7 @@
 
 @code
 {
+    #region Variables
     private DashboardDto? _dashboard;
     private System.Threading.Timer? _timer;
     private DateTime _lastRefresh;
@@ -172,6 +187,15 @@
     private int PendingJobs = 0;
     private int CompletedJobs = 0;
     private int FailedJobs = 0;
+    private int RunCnt = 0;
+    private int HungCnt = 0;
+    private int SleepCnt = 0;
+    private int StopCnt = 0;
+    private string runString = string.Empty;
+    private string hungString = string.Empty;
+    private string sleepString = string.Empty;
+    private string stopString = string.Empty;
+    #endregion
 
     protected override async Task OnInitializedAsync()
     {
@@ -207,6 +231,17 @@
             $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/dashboard.json?v={DateTime.UtcNow.Ticks}");
 
         _dashboard = JsonSerializer.Deserialize<DashboardDto>(json);
+        
+        #region Status Views
+        RunCnt = 0;
+        HungCnt = 0;
+        SleepCnt = 0;
+        StopCnt = 0;
+        runString = "";
+        hungString = "";
+        sleepString = "";
+        stopString = "";
+        #endregion
 
         if (_dashboard != null)
         {
@@ -226,8 +261,26 @@
                                     : "Stopped";
                     }
                 }
-                
+
                 ds.State = calcState;
+                switch(ds.State)
+                {
+                    case "Running":
+                        RunCnt++;
+                        break;
+                    case "Hung":
+                        HungCnt++;
+                        hungString += ds.Service + ": Previous Heartbeat... " + ds.HeartbeatDT.ToString("HH:mm:ss") + "\n";
+                        break;
+                    case "Sleeping":
+                        SleepCnt++;
+                        sleepString += ds.Service + ": Previous Heartbeat... " + ds.HeartbeatDT.ToString("HH:mm:ss") + "\n";
+                        break;
+                    case "Stopped":
+                        StopCnt++;
+                        stopString += ds.Service + ": Previous Heartbeat... " + ds.HeartbeatDT.ToString("HH:mm:ss") + "\n";
+                        break;
+                }
             }
 
             PendingJobs = _dashboard.PendingQueue;

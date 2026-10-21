@@ -266,6 +266,8 @@ main[b-p6kdiuqeqe] {
     background-color: #121212;
     color: white;
     padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .running[b-5d7y8my9vl] {
@@ -287,6 +289,9 @@ main[b-p6kdiuqeqe] {
     margin-top: 20px;
 
     box-shadow: 0 0 10px rgba(0,0,0,.4);
+
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .line-status-bar[b-5d7y8my9vl] {
@@ -316,12 +321,12 @@ main[b-p6kdiuqeqe] {
     font-size: .9rem;
 }
 
-.line-status[b-5d7y8my9vl] {
+/* .line-status {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50px;
-}
+} */
 
 .line-status i[b-5d7y8my9vl] {
     height: 20px;
