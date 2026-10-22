@@ -169,16 +169,6 @@
     {
         dailyPerformanceDT = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
         #region Load Line Status
-        @* _lineStatus = new List<LineStatusDto>
-        {
-            new() { Line = "CDCM", Status = "Stopped" },
-            new() { Line = "CAPL", Status = "Stopped" },
-            new() { Line = "TIL1", Status = "Stopped" },
-            new() { Line = "CGL", Status = "Running" },
-            new() { Line = "EGL", Status = "Running" },
-            new() { Line = "KIL1", Status = "Running" },
-            new() { Line = "KIL2", Status = "Running" },
-        }; *@
         var lineJson = await Http.GetStringAsync(
             $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/linestatus.json?v={DateTime.UtcNow.Ticks}");
         #endregion
