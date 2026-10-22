@@ -205,7 +205,7 @@
     gap: 15px;
     background-color: #121212;
     color: white;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 .dashboard-table {
