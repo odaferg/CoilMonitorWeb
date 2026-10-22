@@ -35,6 +35,10 @@ public class LineStatusDto
 {
     public string Line { get; set; } = "";
     public string Status { get; set; } = "";
+    public DateTime StartTime { get; set; }
+    public DateTime EstimatedEndTime { get; set; }
+    public string Reason { get; set; } = "";
+    public string Comments { get; set; } = "";
 }
 
 public class QueuedCoilDto

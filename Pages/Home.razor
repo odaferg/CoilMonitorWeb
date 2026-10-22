@@ -22,9 +22,13 @@
             {
                 <div class="line-status">
                     <span>@line.Line</span>
-                    @if (line.Status == "Running")
+                    @if (line.Status == "R")
                     {
                         <i class="fa-solid fa-circle-check status-green"></i>
+                    }
+                    else if (line.Status == "S")
+                    {
+                        <i class="fa-solid fa-triangle-exclamation status-yellow"></i>
                     }
                     else
                     {
@@ -92,12 +96,21 @@
 
             <p>
                 <strong>Reason:</strong>
-                @tempDelayReason
+                @SelectedLine.Reason @SelectedLine.Comments
             </p>
 
             <p>
                 <strong>Started:</strong>
-                @tempDelayDT
+                <b>Production Delay </b> started at @SelectedLine.StartTime.ToString("MM/dd HH:mm")
+            </p>
+
+            <p>
+                <strong>Estimated End Time:</strong>
+                @if(SelectedLine.EstimatedEndTime.Year != DateTime.MinValue.Year)
+                {
+                    @SelectedLine.EstimatedEndTime.ToString("MM/dd HH:mm")
+                }
+                
             </p>
 
             <button @onclick="CloseDelay">

@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "CoilMonitorWeb",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-613MIiaC64O+kD4ntAJZTizpprjDCZz45t8b5N4Afo4=",
+    "hash": "sha256-tT38xGovTGcjqGgghHfsP0an6Bc691hY0k4wH+SthW8=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.q38003gvqi.js"
@@ -1242,16 +1242,16 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "CoilMonitorWeb.wasm",
-        "name": "CoilMonitorWeb.f224jyhmo9.wasm",
-        "hash": "sha256-dy6p5KBV3d0jeiLripEY1u2jfNdqss+L5IWmxJmHncM=",
+        "name": "CoilMonitorWeb.sx11srpywy.wasm",
+        "hash": "sha256-8Eet0z1ShJuKZLUUFP5UIS40vGSwuOhVGOxiz8gJDRQ=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
         "virtualPath": "CoilMonitorWeb.pdb",
-        "name": "CoilMonitorWeb.ijxh0pvc71.pdb",
-        "hash": "sha256-8kdwOZ2yDDWvDsVMMnkbbUnd7g5VzSlo02Mg+Agp9fk=",
+        "name": "CoilMonitorWeb.hpmgkjig62.pdb",
+        "hash": "sha256-C0kIEH9f63rvk0J4sZuwAWLX9DlBevhDHGOF5SEsOnc=",
         "cache": "force-cache"
       }
     ],

@@ -205,13 +205,15 @@
     gap: 15px;
     background-color: #121212;
     color: white;
-    /* overflow-x: hidden; */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
 }
 
 .dashboard-table {
     width: 100%;
     overflow-x: auto;
     border-collapse: collapse;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
 }
 
 /* .dashboard-table table {

@@ -205,7 +205,7 @@
     gap: 15px;
     background-color: #121212;
     color: white;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 .dashboard-table[b-5d7y8my9vl] {
@@ -214,11 +214,11 @@
     border-collapse: collapse;
 }
 
-.dashboard-table table[b-5d7y8my9vl] {
+/* .dashboard-table table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-}
+} */
 
 .dashboard-table table th:first-child[b-5d7y8my9vl],
 .dashboard-table table td:first-child[b-5d7y8my9vl] {
