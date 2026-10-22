@@ -214,11 +214,11 @@
     border-collapse: collapse;
 }
 
-.dashboard-table table {
+/* .dashboard-table table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-}
+} */
 
 .dashboard-table table th:first-child,
 .dashboard-table table td:first-child {
