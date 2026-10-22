@@ -1,0 +1,212 @@
+@page "/404"
+@implements IDisposable
+@inject NavigationManager Navigation
+
+<div class="not-found-container">
+    @* @if (!found)
+    {
+        <h1 style="color: #F4F6F9;">404</h1>
+        <p style="color: #F5F5F5;">Click the page to route back to DailySummary</p>
+
+        <div class="danger-zone" @onmouseover="MoveIcon" style="left:@($"{x - 50}px");
+            top:@($"{y - 50}px");">
+
+            <i class="fa-solid fa-file-circle-question missing-page" @onclick="FoundPage" style="left:50px; top:50px;">
+            </i>
+
+        </div>
+    }
+    else
+    {
+        <h1>You found it!</h1>
+        <p>Returning to dashboard...</p>
+    } *@
+    @* @if (showLoader)
+    {
+        <h1 style="color:#F4F6F9;">Searching For Page...</h1>
+
+        <div class="progress">
+            <div class="progress-bar" style="width:@($"{progress}%")">
+            </div>
+        </div>
+
+        <p style="color:#F4F6F9;">@progress%</p>
+    }
+    else if (showGlitch)
+    {
+        <div class="glitch-screen">
+            SIGNAL LOST
+        </div>
+    }
+    else if (showWarning)
+    {
+        <div class="warning-screen">
+
+            <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+
+            <h1>Route Recovery Failed</h1>
+
+            <p style="color:#F4F6F9;">
+                Error 404<br />
+                Unable to locate requested page.
+            </p>
+        </div>
+    } *@
+    @if (CurrentState == RouteState.Loading)
+    {
+        <h2>Searching Route Database...</h2>
+
+        <div class="progress">
+            <div class="progress-bar" style="width:@($"{progress}%")">
+            </div>
+        </div>
+
+        <p>@progress%</p>
+    }
+    else if (CurrentState == RouteState.SignalInterruption)
+    {
+        <div class="signal-warning">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <h2>SIGNAL INTERRUPTION DETECTED</h2>
+        </div>
+    }
+    else if (CurrentState == RouteState.MatchFound)
+    {
+        <div class="success-screen">
+            <i style="color:#F4F6F9;" class="fa-solid fa-circle-check"></i>
+
+            <h2>MATCH FOUND</h2>
+
+            <p>Preparing redirect...</p>
+        </div>
+    }
+    else if (CurrentState == RouteState.Redirecting)
+    {
+        <div class="redirect-screen">
+            <h2>REDIRECTING...</h2>
+        </div>
+    }
+    else if (CurrentState == RouteState.Failed)
+    {
+        <div class="warning-screen">
+            <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+
+            <h1>ROUTE CORRUPTED</h1>
+
+            <p>
+                Error Code: NAV-404
+                <br />
+                Unable to recover requested route.
+            </p>
+
+            <button @onclick="GoHome">
+                Return to Dashboard
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    private int x = 100;
+    private int y = 100;
+
+    private bool found;
+    private System.Timers.Timer? timer;
+    private int progress = 0;
+
+    private bool showLoader = true;
+    private bool showWarning = false;
+    private bool showGlitch = false;
+    private enum RouteState
+    {
+        Loading,
+        SignalInterruption,
+        MatchFound,
+        Redirecting,
+        Failed
+    }
+
+    private RouteState CurrentState = RouteState.Loading;
+
+    protected override async void OnInitialized()
+    {
+        @* var random = new Random();
+
+        timer = new System.Timers.Timer(750);
+
+        timer.Elapsed += (s, e) =>
+        {
+            x = random.Next(20, 700);
+            y = random.Next(100, 400);
+
+            InvokeAsync(StateHasChanged);
+        };
+
+        timer.Start(); *@
+        while (progress < 99)
+        {
+            await Task.Delay(150);
+
+            progress++;
+
+            if (progress == 50)
+            {
+                CurrentState = RouteState.SignalInterruption;
+
+                StateHasChanged();
+
+                await Task.Delay(250);
+
+                CurrentState = RouteState.Loading;
+            }
+
+            StateHasChanged();
+        }
+
+        CurrentState = RouteState.MatchFound;
+        StateHasChanged();
+
+        await Task.Delay(1500);
+
+        progress = 100;
+
+        CurrentState = RouteState.Redirecting;
+        StateHasChanged();
+
+        await Task.Delay(1200);
+
+        CurrentState = RouteState.Failed;
+        StateHasChanged();
+    }
+
+    private void MoveIcon()
+    {
+        var random = new Random();
+        x = random.Next(20, 700);
+        y = random.Next(100, 400);
+    }
+
+    private async Task FoundPage()
+    {
+        found = true;
+
+        timer?.Stop();
+
+        StateHasChanged();
+
+        await Task.Delay(2000);
+
+        Navigation.NavigateTo("/");
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+
+    private void GoHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

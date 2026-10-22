@@ -260,6 +260,169 @@ main[b-p6kdiuqeqe] {
         overflow-y: auto;
     }
 }
+/* /Pages/404.razor.rz.scp.css */
+.not-found-container[b-ldhzzjrnje] {
+    position: relative;
+    height: 500px;
+    text-align: center;
+}
+
+.missing-page[b-ldhzzjrnje] {
+    position: absolute;
+    font-size: 4rem;
+    color: orange;
+    cursor: pointer;
+    transition: all .4s ease;
+}
+
+.missing-page:hover[b-ldhzzjrnje] {
+    transform: scale(1.2);
+}
+
+.danger-zone[b-ldhzzjrnje] {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+}
+
+/* .missing-page {
+    position: absolute;
+    font-size: 4rem;
+    cursor: pointer;
+} */
+
+@keyframes warning-flicker-b-ldhzzjrnje {
+
+    0% { opacity:1; }
+
+    20% { opacity:.3; }
+
+    25% { opacity:1; }
+
+    70% { opacity:.2; }
+
+    100% { opacity:1; }
+}
+
+.warning-icon[b-ldhzzjrnje] {
+    color: #ffc107;
+    font-size: 8rem;
+    animation: warning-flicker-b-ldhzzjrnje .4s infinite;
+}
+
+/* .warning-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 60vh;
+
+    padding: 2rem;
+
+    border: 3px solid #ffc107;
+    border-radius: 12px;
+
+    background: rgba(255, 193, 7, 0.08);
+
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.3);
+} */
+
+.warning-screen h1[b-ldhzzjrnje] {
+    color: #ffc107;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+@keyframes error-flash-b-ldhzzjrnje {
+    0% {
+        background-color: transparent;
+    }
+
+    50% {
+        height: 100vh;
+        background-color: rgba(220, 53, 69, 0.4);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.warning-screen[b-ldhzzjrnje] {
+    animation: error-flash-b-ldhzzjrnje 0.3s 3;
+}
+
+.glitch-screen[b-ldhzzjrnje] {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+    color: #ff0000;
+
+    font-size: 3rem;
+    font-weight: bold;
+
+    animation: glitch-b-ldhzzjrnje 0.15s infinite;
+}
+
+@keyframes glitch-b-ldhzzjrnje {
+    0% {
+        transform: translate(2px, 0);
+    }
+    25% {
+        transform: translate(-2px, 1px);
+    }
+    50% {
+        transform: translate(3px, -1px);
+    }
+    75% {
+        transform: translate(-3px, 2px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.signal-warning[b-ldhzzjrnje] {
+    text-align: center;
+    color: #ffc107;
+
+    animation: glitch-b-ldhzzjrnje .15s infinite;
+}
+
+@keyframes glitch-b-ldhzzjrnje {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    75% {
+        transform: translateX(-3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+p[b-ldhzzjrnje], h2[b-ldhzzjrnje] {
+    color:#F4F6F9;
+}
 /* /Pages/Home.razor.rz.scp.css */
 .dashboard[b-5d7y8my9vl] {
     min-height: 100vh;
@@ -468,13 +631,15 @@ main[b-p6kdiuqeqe] {
     gap: 15px;
     background-color: #121212;
     color: white;
-    /* overflow-x: hidden; */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
 }
 
 .dashboard-table[b-5d7y8my9vl] {
     width: 100%;
     overflow-x: auto;
     border-collapse: collapse;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
 }
 
 /* .dashboard-table table {
@@ -646,6 +811,169 @@ main[b-p6kdiuqeqe] {
 .negative-value[b-ios7d7ppan] {
     background-color: rgba(255,0,0,1); /* Red */
     color: white;
+}
+/* /Pages/NotFound.razor.rz.scp.css */
+.not-found-container[b-3ldvb4p3ic] {
+    position: relative;
+    height: 500px;
+    text-align: center;
+}
+
+.missing-page[b-3ldvb4p3ic] {
+    position: absolute;
+    font-size: 4rem;
+    color: orange;
+    cursor: pointer;
+    transition: all .4s ease;
+}
+
+.missing-page:hover[b-3ldvb4p3ic] {
+    transform: scale(1.2);
+}
+
+.danger-zone[b-3ldvb4p3ic] {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+}
+
+/* .missing-page {
+    position: absolute;
+    font-size: 4rem;
+    cursor: pointer;
+} */
+
+@keyframes warning-flicker-b-3ldvb4p3ic {
+
+    0% { opacity:1; }
+
+    20% { opacity:.3; }
+
+    25% { opacity:1; }
+
+    70% { opacity:.2; }
+
+    100% { opacity:1; }
+}
+
+.warning-icon[b-3ldvb4p3ic] {
+    color: #ffc107;
+    font-size: 8rem;
+    animation: warning-flicker-b-3ldvb4p3ic .4s infinite;
+}
+
+/* .warning-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 60vh;
+
+    padding: 2rem;
+
+    border: 3px solid #ffc107;
+    border-radius: 12px;
+
+    background: rgba(255, 193, 7, 0.08);
+
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.3);
+} */
+
+.warning-screen h1[b-3ldvb4p3ic] {
+    color: #ffc107;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+@keyframes error-flash-b-3ldvb4p3ic {
+    0% {
+        background-color: transparent;
+    }
+
+    50% {
+        height: 100vh;
+        background-color: rgba(220, 53, 69, 0.4);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.warning-screen[b-3ldvb4p3ic] {
+    animation: error-flash-b-3ldvb4p3ic 0.3s 3;
+}
+
+.glitch-screen[b-3ldvb4p3ic] {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+    color: #ff0000;
+
+    font-size: 3rem;
+    font-weight: bold;
+
+    animation: glitch-b-3ldvb4p3ic 0.15s infinite;
+}
+
+@keyframes glitch-b-3ldvb4p3ic {
+    0% {
+        transform: translate(2px, 0);
+    }
+    25% {
+        transform: translate(-2px, 1px);
+    }
+    50% {
+        transform: translate(3px, -1px);
+    }
+    75% {
+        transform: translate(-3px, 2px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.signal-warning[b-3ldvb4p3ic] {
+    text-align: center;
+    color: #ffc107;
+
+    animation: glitch-b-3ldvb4p3ic .15s infinite;
+}
+
+@keyframes glitch-b-3ldvb4p3ic {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    75% {
+        transform: translateX(-3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+p[b-3ldvb4p3ic], h2[b-3ldvb4p3ic] {
+    color:#F4F6F9;
 }
 /* /Pages/Queue.razor.rz.scp.css */
 .queue-page[b-epqig6pss1] {

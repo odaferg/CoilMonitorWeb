@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoilMonitorWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c64a51edb0d1370305f5fa84f66040d8864f3b79")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c83e270954b855b4ff5cac412827013af22e92e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoilMonitorWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoilMonitorWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
