@@ -16,7 +16,7 @@ public class ServiceStatusDto
     public DateTimeOffset HeartbeatDT { get; set; }
 }
 
-public class DailySummary
+public class DailySummaryTwo
 {
     public List<DailySummaryDto> DailyInfo { get; set; } = [];
     public string SnapShotDate { get; set; } = "";
@@ -96,4 +96,73 @@ public class ServerStatusDto
     public string Server { get; set; } = "";
     public string State { get; set; } = "";
     public DateTimeOffset HeartbeatDT { get; set; }
+}
+
+public class DailySummary
+{
+    public DateTime Date { get; set; }
+    public bool IsToday { get; set; }
+    public List<DailySummaryTable> Tables { get; set; }
+}
+
+public class DailySummaryTable
+{
+    public string Title { get; set; }
+    public string URL { get; set; }
+    public int PreviousYear { get; set; }
+    public int CurrentYear { get; set; }
+    public int CurrentMonth { get; set; }
+    public bool IsAllTable { get; set; }
+    public bool IsINTable { get; set; }
+    public List<ProdDailySummaryRow>? PRows { get; set; }
+}
+
+public class ProdDailySummaryRow
+{
+    public string Title { get; set; }
+    public string URL { get; set; }
+    public DailySummaryValue PreviousYear { get; set; }
+    public DailySummaryValue MonthlyBusinessPlan { get; set; }
+    public DailySummaryValue YearlyBusinessPlan { get; set; }
+    public DailySummaryValue Day { get; set; }
+    public DailySummaryValue WeekToDate { get; set; }
+    public DailySummaryValue MonthToDate { get; set; }
+    public DailySummaryValue YearToDate { get; set; }
+}
+
+public class DailySummaryValue
+{
+    public bool IsValid { get; set; }
+    public bool IsBlank { get; set; }
+    public double Value { get; set; }
+    public DateTime dtValue { get; set; }
+    public int SignificantDigits { get; set; }
+    public string URL { get; set; }
+    public string Style { get; set; }
+    public void SetDailySummary()
+    {
+        this.IsValid = false;
+    }
+    public void SetDailySummary(double Value, int SignificantDigits)
+    {
+        this.IsValid = true;
+        this.Value = Value;
+        this.SignificantDigits = SignificantDigits;
+    }
+    public void SetDailySummary(double Value, int SignificantDigits, string URL)
+    {
+        this.IsValid = true;
+        this.Value = Value;
+        this.SignificantDigits = SignificantDigits;
+        this.URL = URL;
+    }
+    public void SetDailySummary(DateTime Value)
+    {
+        this.IsValid = true;
+        this.dtValue = Value;
+        if (Value.Year < DateTime.Now.Year)
+        {
+            this.IsBlank = true;
+        }
+    }
 }

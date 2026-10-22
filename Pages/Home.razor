@@ -12,7 +12,7 @@
 <div class="dashboard">
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h1 class="mb-0"> Home Page Dashboard </h1>
+        <h1 class="mb-0"> NCW Web (Mobile)  </h1>
 
     </div>
     <div class="line-status-container">
@@ -22,55 +22,106 @@
             {
                 <div class="line-status">
                     <span>@line.Line</span>
-                    <i
-                    class="@(line.Status == "Running" ? "fa-solid fa-circle-check status-green" : "fa-solid fa-circle-xmark status-red")"></i>
+                    @if (line.Status == "Running")
+                    {
+                        <i class="fa-solid fa-circle-check status-green"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-circle-xmark status-red" @onclick="() => ShowDelay(line)"></i>
+                    }
+                    
                 </div>
             }
         }
     </div>
     <br /><br />
+    <b>Daily Performance Through: @dailyPerformanceDT</b>
     @* <pre>@_rawJson</pre> *@
-    @if (_dashboard?.DailyInfo?.Any() == true)
-    {
-        <div class="table-responsive">
-            <table class="status-table">
-                <thead>
-                    <tr>
-                        <th>@_dashboard.SnapShotDate</th>
-                        <th>Day</th>
-                        <th>vs S&OP</th>
-                        <th>Working Ratio</th>
-                        <th>Efficiency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in _dashboard.DailyInfo)
-                    {
-                        <tr>
-                            <td>@item.Line.Replace("K", "")</td>
-                            <td class="@(item.SOP < 0 ? "negative-value" : "positive-value")">@item.Day</td>
-                            <td class="@(item.SOP < 0 ? "negative-value" : "positive-value")">@item.SOP</td>
-                            <td>@item.WorkingRatio</td>
-                            <td>@item.Efficiency</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    else
-    {
-        <h1 class="mb-0">Loading...</h1>
-    }
+    <div class="production-dashboard">
+        @if (_homepage?.Tables?.Any() == true)
+        {
+            <div class="table-responsive">
+                @foreach (var table in _homepage.Tables)
+                {
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>@table.Title</th>
+                                <th>Day</th>
+                                <th>WTD</th>
+                                <th>MTD</th>
+                                <th>YTD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in table.PRows)
+                            {
+                                <tr>
+                                    <td>@row.Title</td>
+                                    <td class="@row.Day.Style">@FormatValue(row.Day)</td>
+                                    <td class="@row.WeekToDate.Style">@FormatValue(row.WeekToDate)</td>
+                                    <td class="@row.MonthToDate.Style">@FormatValue(row.MonthToDate)</td>
+                                    <td class="@row.YearToDate.Style">@FormatValue(row.YearToDate)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br/>
+                }
+            </div>
+        }
+        else
+        {
+            <h1 class="mb-0">Loading...</h1>
+        }
+    </div>
 </div>
+@if (ShowDelayPopup && SelectedLine != null)
+{
+    <div class="popup-overlay" @onclick="CloseDelay">
+
+        <div class="popup-card" @onclick:stopPropagation="true">
+
+            <h4>@SelectedLine.Line</h4>
+
+            <p>
+                <strong>Status:</strong>
+                @SelectedLine.Status
+            </p>
+
+            <p>
+                <strong>Reason:</strong>
+                @tempDelayReason
+            </p>
+
+            <p>
+                <strong>Started:</strong>
+                @tempDelayDT
+            </p>
+
+            <button @onclick="CloseDelay">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+}
 
 @code
 {
     #region Variables
-    private DailySummary? _dashboard;
+    private DailySummaryTwo? _dashboard;
+    private DailySummary? _homepage;
     private List<LineStatusDto>? _lineStatus;
     private System.Threading.Timer? _timer;
     private DateTime _lastRefresh;
+    string tempDelayReason = "This is just a temp holder";
+    DateTime tempDelayDT = DateTime.Now.AddDays(-3);
+    private LineStatusDto? SelectedLine;
+    private bool ShowDelayPopup = false;
+    private string dailyPerformanceDT = "";
     #endregion
     string _rawJson = "Blank";
     protected override async Task OnInitializedAsync()
@@ -103,6 +154,7 @@
 
     private async Task RefreshDashboardAsync()
     {
+        dailyPerformanceDT = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
         #region Load Line Status
         @* _lineStatus = new List<LineStatusDto>
         {
@@ -117,16 +169,39 @@
         var lineJson = await Http.GetStringAsync(
             $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/linestatus.json?v={DateTime.UtcNow.Ticks}");
         #endregion
+        @* var json = await Http.GetStringAsync(
+            $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/dailysummary.json?v={DateTime.UtcNow.Ticks}"); *@
         var json = await Http.GetStringAsync(
-            $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/dailysummary.json?v={DateTime.UtcNow.Ticks}");
+            $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/homepage.json?v={DateTime.UtcNow.Ticks}");
 
         _lineStatus = JsonSerializer.Deserialize<List<LineStatusDto>>(lineJson);
-        _dashboard = JsonSerializer.Deserialize<DailySummary>(json);
+        @* _dashboard = JsonSerializer.Deserialize<DailySummaryTwo>(json); *@
+        _homepage = JsonSerializer.Deserialize<DailySummary>(json);
         _rawJson = json;
 
         _lastRefresh = DateTime.Now;
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    private string FormatValue(DailySummaryValue value)
+    {
+        if (!value.IsValid)
+            return "";
+
+        return value.Value.ToString($"N{value.SignificantDigits}");
+    }
+
+    private void ShowDelay(LineStatusDto line)
+    {
+        SelectedLine = line;
+        ShowDelayPopup = true;
+    }
+
+    private void CloseDelay()
+    {
+        ShowDelayPopup = false;
+        SelectedLine = null;
     }
 
 }
