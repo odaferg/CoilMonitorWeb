@@ -1,0 +1,71 @@
+.delay-tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-button {
+    border: none;
+    background: transparent;
+    padding: 10px 25px;
+    cursor: pointer;
+    color:#F4F6F9;
+}
+
+.tab-button.active {
+    background: #1976d2;
+    color: white;
+}
+
+.tab-button:hover {
+    background: #e0e0e0;
+    color: black;
+}
+
+.delay-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 15px;
+    background-color: #121212;
+    color: white;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
+}
+
+.delay-table {
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
+}
+
+.delay-table th,
+.delay-table td {
+    padding: 8px 10px;
+    border: 1px solid #333;
+}
+
+.delay-table th {
+    border-bottom: 2px solid #555;
+    background-color: #111;
+    font-weight: 600;
+}
+
+.delay-table tbody tr:nth-child(even) {
+    background-color: #111;
+}
+
+.delay-table tbody tr:nth-child(odd) {
+    background-color: #000;
+}
+
+.delay-table tbody tr:hover {
+    background-color: #1e3a5f;
+}
+
+.delay-table td.description-column,
+.delay-table th.description-column {
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}

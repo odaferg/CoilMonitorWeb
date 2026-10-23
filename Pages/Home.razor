@@ -3,7 +3,7 @@
 @using CoilMonitorWeb.Models
 @using CoilMonitorWeb.Components
 @using CoilMonitorWeb.Helpers
-
+@inject NavigationManager Navigation
 @inject HttpClient Http
 @implements IDisposable
 @inject IJSRuntime JS
@@ -12,7 +12,7 @@
 <div class="dashboard">
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h1 class="mb-0"> NCW Web (Mobile)  </h1>
+        <h1 class="mb-0"> NCW Web (Mobile) @_lastLineClicked </h1>
 
     </div>
     <div class="line-status-container">
@@ -21,7 +21,9 @@
             @foreach (var line in _lineStatus)
             {
                 <div class="line-status">
-                    <span>@line.Line</span>
+                    <span @onclick='() => SecretClick(line.Line)'>
+                        @line.Line
+                    </span>
                     @if (line.Status == "R")
                     {
                         <i class="fa-solid fa-circle-check status-green"></i>
@@ -71,7 +73,7 @@
                             }
                         </tbody>
                     </table>
-                    <br/>
+                    <br />
                 }
             </div>
         }
@@ -106,7 +108,7 @@
 
             <p>
                 <strong>Estimated End Time:</strong>
-                @if(SelectedLine.EstimatedEndTime.Year != DateTime.MinValue.Year)
+                @if (SelectedLine.EstimatedEndTime.Year != DateTime.MinValue.Year)
                 {
                     @SelectedLine.EstimatedEndTime.ToString("MM/dd HH:mm")
                 }
@@ -203,6 +205,36 @@
     {
         ShowDelayPopup = false;
         SelectedLine = null;
+    }
+
+
+    private int _secretClickCount;
+    private DateTime _lastClick = DateTime.MinValue;
+    private string? _lastLineClicked;
+    private void SecretClick(string line)
+    {
+        // Reset if too much time passed
+        if ((DateTime.Now - _lastClick).TotalSeconds > 3)
+        {
+            _secretClickCount = 0;
+            _lastLineClicked = null;
+        }
+
+        if (_lastLineClicked != line)
+        {
+            _secretClickCount = 0;
+            _lastLineClicked = line;
+        }
+
+        _secretClickCount++;
+        _lastClick = DateTime.Now;
+
+        if (_secretClickCount >= 3)
+        {
+            _secretClickCount = 0;
+            _lastLineClicked = null;
+            Navigation.NavigateTo($"Delays?line={line}");
+        }
     }
 
 }

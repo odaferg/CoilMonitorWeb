@@ -1,0 +1,211 @@
+@page "/Delays"
+@using CoilMonitorWeb.Models
+@using System.Text.Json
+@inject NavigationManager nav
+@inject HttpClient Http
+@implements IDisposable
+@inject IJSRuntime JS
+@inject RequestService RequestService
+
+<div class="delay-tabs">
+    <button class="@GetTabClass("All")" @onclick='() => SelectTab("All")'>
+        All
+    </button>
+
+    <button class="@GetTabClass("CDCM")" @onclick='() => SelectTab("CDCM")'>
+        CDCM
+    </button>
+
+    <button class="@GetTabClass("CAPL")" @onclick='() => SelectTab("CAPL")'>
+        CAPL
+    </button>
+
+    <button class="@GetTabClass("TIL1")" @onclick='() => SelectTab("TIL1")'>
+        TIL1
+    </button>
+
+    <button class="@GetTabClass("CGL")" @onclick='() => SelectTab("CGL")'>
+        CGL
+    </button>
+
+    <button class="@GetTabClass("EGL")" @onclick='() => SelectTab("EGL")'>
+        EGL
+    </button>
+
+    <button class="@GetTabClass("KIL1")" @onclick='() => SelectTab("KIL1")'>
+        KIL1
+    </button>
+
+    <button class="@GetTabClass("KIL2")" @onclick='() => SelectTab("KIL2")'>
+        KIL2
+    </button>
+</div>
+<div class="delay-dashboard">
+    <table class="delay-table">
+        <thead>
+            @if (SelectedTab == "All")
+            {
+                <tr>
+                    <th>Line</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Duration</th>
+                    <th>Reason</th>
+                    <th>WR</th>
+                    <th class="description-column">Description</th>
+                    <th>Ended</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Duration</th>
+                    <th>Reason</th>
+                    <th>WR</th>
+                    <th class="description-column">Description</th>
+                    <th>Ended</th>
+                </tr>
+            }
+        </thead>
+        <tbody>
+            @foreach (var item in FilteredDelays)
+            {
+                @if (SelectedTab == "All")
+                {
+                    <tr>
+                        <td>@item.Line</td>
+                        <td>@FormatDT(@item.Start)</td>
+                        @if (@item.DelayClosed == "N")
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@FormatDT(@item.End)</td>
+                        }
+                        <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
+                        <td>@item.Reason</td>
+                        <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
+                        <td class="description-column">@item.Description</td>
+                        <td>@item.DelayClosed</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@FormatDT(@item.Start)</td>
+                        @if (@item.DelayClosed == "N")
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@FormatDT(@item.End)</td>
+                        }
+                        @* <td style="color:@GetStatusColor(@item.DelayClosed)">@FormatDT(@item.End)</td> *@
+                        <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
+                        <td>@item.Reason</td>
+                        <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
+                        <td class="description-column">@item.Description</td>
+                        <td>@item.DelayClosed</td>
+                    </tr>
+                }
+                
+            }
+        </tbody>
+    </table>
+</div>
+
+@code
+{
+    private string SelectedTab = "All";
+    private List<Delay>? DelaysList = new();
+    private IEnumerable<Delay>? FilteredDelays =>
+    SelectedTab == "All"
+        ? DelaysList
+        : DelaysList?.Where(x => x.Line == SelectedTab);
+
+    private void SelectTab(string tab)
+    {
+        SelectedTab = tab;
+        nav.NavigateTo($"/delays?line={tab}", false);
+    }
+
+    private string GetTabClass(string tab)
+    {
+        return SelectedTab == tab
+            ? "tab-button active"
+            : "tab-button";
+    }
+
+    private string FormatWorkingRatio(bool wr)
+    {
+        return wr == false ? "N" : "Y";
+    }
+
+    private int FormatDuration(DateTime Start, DateTime end, string DelayClosed)
+    {
+        if (DelayClosed == "Y")
+        {
+            return (int)(end - Start).TotalMinutes;
+        }
+        end = DateTime.Now;
+        return (int)(end - Start).TotalMinutes;
+    }
+
+    private string FormatDT(DateTime DT)
+    {
+        return DT.ToString("MM/dd/yyy HH:mm");
+    }
+
+    private string GetStatusColor(String Closed)
+    {
+        if (Closed == "N")
+        {
+            return "#121212 !important";
+        }
+
+        return "white !important";
+    }
+
+    private System.Threading.Timer? _timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDashboardAsync();
+
+        var uri = nav.ToAbsoluteUri(nav.Uri);
+
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        var line = query["line"];
+
+        if (!string.IsNullOrWhiteSpace(line))
+        {
+            SelectedTab = line;
+        }
+
+        _timer = new Timer(
+            async _ => await RefreshDashboardAsync(),
+            null,
+            TimeSpan.FromSeconds(30),
+            TimeSpan.FromSeconds(30));
+    }
+
+    private async Task RefreshDashboardAsync()
+    {
+        var json = await Http.GetStringAsync(
+            $"https://gist.githubusercontent.com/odaferg-code/d30718e95983c316f8da7255aef322b7/raw/delays.json?v={DateTime.UtcNow.Ticks}");
+
+        DelaysList = JsonSerializer.Deserialize<List<Delay>>(json);
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}

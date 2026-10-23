@@ -170,3 +170,14 @@ public class DailySummaryValue
         }
     }
 }
+
+public class Delay
+{
+    public string Line { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
+    public string Reason { get; set; }
+    public string Description { get; set; }
+    public bool WorkingRatio { get; set; }
+    public string DelayClosed { get; set; }
+}

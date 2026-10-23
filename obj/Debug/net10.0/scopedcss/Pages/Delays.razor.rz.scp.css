@@ -1,0 +1,71 @@
+.delay-tabs[b-2z589kzctq] {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-button[b-2z589kzctq] {
+    border: none;
+    background: transparent;
+    padding: 10px 25px;
+    cursor: pointer;
+    color:#F4F6F9;
+}
+
+.tab-button.active[b-2z589kzctq] {
+    background: #1976d2;
+    color: white;
+}
+
+.tab-button:hover[b-2z589kzctq] {
+    background: #e0e0e0;
+    color: black;
+}
+
+.delay-dashboard[b-2z589kzctq] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 15px;
+    background-color: #121212;
+    color: white;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
+}
+
+.delay-table[b-2z589kzctq] {
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
+}
+
+.delay-table th[b-2z589kzctq],
+.delay-table td[b-2z589kzctq] {
+    padding: 8px 10px;
+    border: 1px solid #333;
+}
+
+.delay-table th[b-2z589kzctq] {
+    border-bottom: 2px solid #555;
+    background-color: #111;
+    font-weight: 600;
+}
+
+.delay-table tbody tr:nth-child(even)[b-2z589kzctq] {
+    background-color: #111;
+}
+
+.delay-table tbody tr:nth-child(odd)[b-2z589kzctq] {
+    background-color: #000;
+}
+
+.delay-table tbody tr:hover[b-2z589kzctq] {
+    background-color: #1e3a5f;
+}
+
+.delay-table td.description-column[b-2z589kzctq],
+.delay-table th.description-column[b-2z589kzctq] {
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
