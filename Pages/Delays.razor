@@ -25,11 +25,11 @@
             TIL1
         </button>
 
-        <button class="@GetTabClass("CGL")" @onclick='() => SelectTab("CGL")'>
+        <button class="@GetTabClass("KCGL")" @onclick='() => SelectTab("KCGL")'>
             CGL
         </button>
 
-        <button class="@GetTabClass("EGL")" @onclick='() => SelectTab("EGL")'>
+        <button class="@GetTabClass("KEGL")" @onclick='() => SelectTab("KEGL")'>
             EGL
         </button>
 
@@ -76,7 +76,7 @@
                     @if (SelectedTab == "All")
                     {
                         <tr>
-                            <td>@item.Line</td>
+                            <td>@item.Line.Replace("K","")</td>
                             <td>@FormatDT(@item.Start)</td>
                             @if (@item.DelayClosed == "N")
                             {
@@ -113,7 +113,7 @@
                             <td>@item.DelayClosed</td>
                         </tr>
                     }
-                    
+
                 }
             </tbody>
         </table>
