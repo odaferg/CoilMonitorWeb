@@ -1,6 +1,8 @@
 .delay-tabs[b-2z589kzctq] {
     display: flex;
     border-bottom: 1px solid #ccc;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Improves smooth scrolling on iOS */
 }
 
 .tab-button[b-2z589kzctq] {
@@ -42,6 +44,7 @@
 .delay-table td[b-2z589kzctq] {
     padding: 8px 10px;
     border: 1px solid #333;
+    white-space: nowrap;
 }
 
 .delay-table th[b-2z589kzctq] {
@@ -68,4 +71,13 @@
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
+}
+
+.dashboard[b-2z589kzctq] {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
 }

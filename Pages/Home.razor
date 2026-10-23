@@ -68,7 +68,14 @@
                                     <td class="@row.Day.Style">@FormatValue(row.Day)</td>
                                     <td class="@row.WeekToDate.Style">@FormatValue(row.WeekToDate)</td>
                                     <td class="@row.MonthToDate.Style">@FormatValue(row.MonthToDate)</td>
-                                    <td class="@row.YearToDate.Style">@FormatValue(row.YearToDate)</td>
+                                    @if(@row.Title.Contains("Prod Tons vs"))
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="@row.YearToDate.Style">@FormatValue(row.YearToDate)</td>
+                                    }
                                 </tr>
                             }
                         </tbody>
@@ -167,7 +174,7 @@
 
     private async Task RefreshDashboardAsync()
     {
-        dailyPerformanceDT = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+        @* dailyPerformanceDT = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"); *@
         #region Load Line Status
         var lineJson = await Http.GetStringAsync(
             $"https://gist.githubusercontent.com/odaferg/632d5e2a1f95e88e6d8d1bb42ddaca5d/raw/linestatus.json?v={DateTime.UtcNow.Ticks}");
@@ -181,6 +188,7 @@
         @* _dashboard = JsonSerializer.Deserialize<DailySummaryTwo>(json); *@
         _homepage = JsonSerializer.Deserialize<DailySummary>(json);
         _rawJson = json;
+        dailyPerformanceDT = _homepage!.Date.ToString("yyyy-MM-dd");
 
         _lastRefresh = DateTime.Now;
 
