@@ -69,3 +69,12 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
+
+.dashboard {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+}

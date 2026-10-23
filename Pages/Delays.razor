@@ -7,115 +7,117 @@
 @inject IJSRuntime JS
 @inject RequestService RequestService
 
-<div class="delay-tabs">
-    <button class="@GetTabClass("All")" @onclick='() => SelectTab("All")'>
-        All
-    </button>
+<div class="dashboard">
+    <div class="delay-tabs">
+        <button class="@GetTabClass("All")" @onclick='() => SelectTab("All")'>
+            All
+        </button>
 
-    <button class="@GetTabClass("CDCM")" @onclick='() => SelectTab("CDCM")'>
-        CDCM
-    </button>
+        <button class="@GetTabClass("CDCM")" @onclick='() => SelectTab("CDCM")'>
+            CDCM
+        </button>
 
-    <button class="@GetTabClass("CAPL")" @onclick='() => SelectTab("CAPL")'>
-        CAPL
-    </button>
+        <button class="@GetTabClass("CAPL")" @onclick='() => SelectTab("CAPL")'>
+            CAPL
+        </button>
 
-    <button class="@GetTabClass("TIL1")" @onclick='() => SelectTab("TIL1")'>
-        TIL1
-    </button>
+        <button class="@GetTabClass("TIL1")" @onclick='() => SelectTab("TIL1")'>
+            TIL1
+        </button>
 
-    <button class="@GetTabClass("CGL")" @onclick='() => SelectTab("CGL")'>
-        CGL
-    </button>
+        <button class="@GetTabClass("CGL")" @onclick='() => SelectTab("CGL")'>
+            CGL
+        </button>
 
-    <button class="@GetTabClass("EGL")" @onclick='() => SelectTab("EGL")'>
-        EGL
-    </button>
+        <button class="@GetTabClass("EGL")" @onclick='() => SelectTab("EGL")'>
+            EGL
+        </button>
 
-    <button class="@GetTabClass("KIL1")" @onclick='() => SelectTab("KIL1")'>
-        KIL1
-    </button>
+        <button class="@GetTabClass("KIL1")" @onclick='() => SelectTab("KIL1")'>
+            KIL1
+        </button>
 
-    <button class="@GetTabClass("KIL2")" @onclick='() => SelectTab("KIL2")'>
-        KIL2
-    </button>
-</div>
-<div class="delay-dashboard">
-    <table class="delay-table">
-        <thead>
-            @if (SelectedTab == "All")
-            {
-                <tr>
-                    <th>Line</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Duration</th>
-                    <th>Reason</th>
-                    <th>WR</th>
-                    <th class="description-column">Description</th>
-                    <th>Ended</th>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Duration</th>
-                    <th>Reason</th>
-                    <th>WR</th>
-                    <th class="description-column">Description</th>
-                    <th>Ended</th>
-                </tr>
-            }
-        </thead>
-        <tbody>
-            @foreach (var item in FilteredDelays)
-            {
+        <button class="@GetTabClass("KIL2")" @onclick='() => SelectTab("KIL2")'>
+            KIL2
+        </button>
+    </div>
+    <div class="delay-dashboard">
+        <table class="delay-table">
+            <thead>
                 @if (SelectedTab == "All")
                 {
                     <tr>
-                        <td>@item.Line</td>
-                        <td>@FormatDT(@item.Start)</td>
-                        @if (@item.DelayClosed == "N")
-                        {
-                            <td></td>
-                        }
-                        else
-                        {
-                            <td>@FormatDT(@item.End)</td>
-                        }
-                        <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
-                        <td>@item.Reason</td>
-                        <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
-                        <td class="description-column">@item.Description</td>
-                        <td>@item.DelayClosed</td>
+                        <th>Line</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Duration</th>
+                        <th>Reason</th>
+                        <th>WR</th>
+                        <th class="description-column">Description</th>
+                        <th>Ended</th>
                     </tr>
                 }
                 else
                 {
                     <tr>
-                        <td>@FormatDT(@item.Start)</td>
-                        @if (@item.DelayClosed == "N")
-                        {
-                            <td></td>
-                        }
-                        else
-                        {
-                            <td>@FormatDT(@item.End)</td>
-                        }
-                        @* <td style="color:@GetStatusColor(@item.DelayClosed)">@FormatDT(@item.End)</td> *@
-                        <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
-                        <td>@item.Reason</td>
-                        <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
-                        <td class="description-column">@item.Description</td>
-                        <td>@item.DelayClosed</td>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Duration</th>
+                        <th>Reason</th>
+                        <th>WR</th>
+                        <th class="description-column">Description</th>
+                        <th>Ended</th>
                     </tr>
                 }
-                
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in FilteredDelays)
+                {
+                    @if (SelectedTab == "All")
+                    {
+                        <tr>
+                            <td>@item.Line</td>
+                            <td>@FormatDT(@item.Start)</td>
+                            @if (@item.DelayClosed == "N")
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@FormatDT(@item.End)</td>
+                            }
+                            <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
+                            <td>@item.Reason</td>
+                            <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
+                            <td class="description-column">@item.Description</td>
+                            <td>@item.DelayClosed</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@FormatDT(@item.Start)</td>
+                            @if (@item.DelayClosed == "N")
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@FormatDT(@item.End)</td>
+                            }
+                            @* <td style="color:@GetStatusColor(@item.DelayClosed)">@FormatDT(@item.End)</td> *@
+                            <td>@FormatDuration(@item.Start, @item.End, @item.DelayClosed)</td>
+                            <td>@item.Reason</td>
+                            <td>@FormatWorkingRatio(@item.WorkingRatio)</td>
+                            <td class="description-column">@item.Description</td>
+                            <td>@item.DelayClosed</td>
+                        </tr>
+                    }
+                    
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @code
