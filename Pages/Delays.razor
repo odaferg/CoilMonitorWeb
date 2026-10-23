@@ -76,7 +76,7 @@
                     @if (SelectedTab == "All")
                     {
                         <tr>
-                            <td>@item.Line.Replace("K","")</td>
+                            <td>@FormatLine(@item.Line)</td>
                             <td>@FormatDT(@item.Start)</td>
                             @if (@item.DelayClosed == "N")
                             {
@@ -140,6 +140,15 @@
         return SelectedTab == tab
             ? "tab-button active"
             : "tab-button";
+    }
+
+    private string FormatLine(string line)
+    {
+        if (line == "KCGL" || line == "KEGL")
+        {
+            return line.Replace("K", "");
+        }
+        return line;
     }
 
     private string FormatWorkingRatio(bool wr)

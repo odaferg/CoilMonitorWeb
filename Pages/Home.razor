@@ -233,6 +233,10 @@
         {
             _secretClickCount = 0;
             _lastLineClicked = null;
+            if (line == "CGL" || line == "EGL")
+            {
+                line = "K" + line;
+            }
             Navigation.NavigateTo($"Delays?line={line}");
         }
     }
